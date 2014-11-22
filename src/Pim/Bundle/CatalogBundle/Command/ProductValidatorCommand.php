@@ -41,6 +41,7 @@ class ProductValidatorCommand extends ContainerAwareCommand
         $product = $this->getProduct($identifier);
         if (!$product) {
             $output->writeln(sprintf('<error>Product with identifier "%s" not found<error>', $identifier));
+
             return;
         }
 

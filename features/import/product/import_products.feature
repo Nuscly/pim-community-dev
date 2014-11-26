@@ -198,6 +198,9 @@ Feature: Execute a job
     Given the following attributes:
       | code                      | type |
       | locale_specific_attribute | text |
+    Then I am on the Attribute index page
+    And I filter by "Code" with value "locale_specific_attribute"
+    And I click on the "locale_specific_attribute" row
     Given the following file to import:
       """
       sku;locale_specific_attribute-en_US

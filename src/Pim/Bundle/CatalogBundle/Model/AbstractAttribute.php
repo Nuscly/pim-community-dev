@@ -200,7 +200,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
         $this->families            = new ArrayCollection();
         $this->translations        = new ArrayCollection();
         $this->validationRule      = null;
-        $this->properties          = array();
+        $this->properties          = [];
     }
 
     /**
@@ -549,7 +549,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
      */
     public function getGroupSequence()
     {
-        $groups = array('Default', $this->getAttributeType());
+        $groups = ['Default', $this->getAttributeType()];
 
         if ($this->isUnique()) {
             $groups[] = 'unique';

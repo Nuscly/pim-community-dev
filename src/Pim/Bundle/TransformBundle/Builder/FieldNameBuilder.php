@@ -85,8 +85,8 @@ class FieldNameBuilder
     }
 
     /**
-     * Extract informations from an attribute and exploded field name
-     * This method is used from extractAttributeFieldNameInfos and can be redefine to add new rules
+     * Extract information from an attribute and exploded field name
+     * This method is used from extractAttributeFieldNameInfo and can be redefine to add new rules
      *
      * @param AbstractAttribute $attribute
      * @param array             $explodedFieldName
@@ -95,6 +95,8 @@ class FieldNameBuilder
      */
     protected function extractAttributeInfos(AbstractAttribute $attribute, array $explodedFieldName)
     {
+        $this->checkForLocaleSpecificValue($attribute, $explodedFieldName);
+
         if ($attribute->isLocalizable() && $attribute->isScopable()) {
             $localeCode = $explodedFieldName[1];
             $scopeCode  = $explodedFieldName[2];
@@ -152,5 +154,31 @@ class FieldNameBuilder
     protected function getRepository($entityClass)
     {
         return $this->managerRegistry->getRepository($entityClass);
+    }
+
+    /**
+     * Check if provided locales for an locale specific attribute exist
+     *
+     * @param AbstractAttribute $attribute
+     * @param array             $explodedFieldName
+     */
+    protected function checkForLocaleSpecificValue(AbstractAttribute $attribute, array $explodedFieldName)
+    {
+        $availableLocales = [];
+
+        if ($attribute->isLocaleSpecific()) {
+            foreach ($attribute->getAvailableLocales() as $locale) {
+                $availableLocales[] = $locale->getCode();
+            }
+            if (!in_array($explodedFieldName[1], $availableLocales)) {
+                throw new \LogicException(
+                    sprintf(
+                        'The provided specific locale "%s" does not exist for "%s" attribute ',
+                        $explodedFieldName[1],
+                        $explodedFieldName[0]
+                    )
+                );
+            }
+        }
     }
 }

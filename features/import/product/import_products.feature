@@ -192,3 +192,20 @@ Feature: Execute a job
     Then there should be 1 products
     And the product "SKU-001" should have the following value:
       | length | 4000.0000 CENTIMETER |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3377
+  Scenario: Successfully import products metrics splitting the data and unit
+    Given the following attributes:
+      | code                      | type |
+      | locale_specific_attribute | text |
+    Given the following file to import:
+      """
+      sku;locale_specific_attribute-en_US
+      SKU-001;test value
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see "PRODUCT IMPORT  The provided specific locale \"en_US\" does not exist for \"locale_specific_attribute\" attribute"

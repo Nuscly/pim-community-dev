@@ -1357,4 +1357,15 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
 
         return $this;
     }
+
+    /**
+     * Check if attribute is locale specific
+     *
+     * @return bool
+     */
+    public function isLocaleSpecific()
+    {
+        $availableLocale = $this->getAvailableLocales();
+        return !empty($availableLocale);
+    }
 }
